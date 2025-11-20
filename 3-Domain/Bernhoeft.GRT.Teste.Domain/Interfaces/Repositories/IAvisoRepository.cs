@@ -1,11 +1,15 @@
-﻿using Bernhoeft.GRT.ContractWeb.Domain.SqlServer.ContractStore.Entities;
+﻿
 using Bernhoeft.GRT.Core.EntityFramework.Domain.Interfaces;
-using Bernhoeft.GRT.Core.Enums;
+using Bernhoeft.GRT.Teste.Domain.Entities;
 
-namespace Bernhoeft.GRT.ContractWeb.Domain.SqlServer.ContractStore.Interfaces.Repositories
+namespace Bernhoeft.GRT.Teste.Domain.Interfaces.Repositories
 {
     public interface IAvisoRepository : IRepository<AvisoEntity>
     {
-        Task<List<AvisoEntity>> ObterTodosAvisosAsync(TrackingBehavior tracking = TrackingBehavior.Default, CancellationToken cancellationToken = default);
+        Task CriarAvisoAsync(AvisoEntity aviso, CancellationToken cancellationToken = default);
+        Task AtualizarAvisoAsync(AvisoEntity aviso);
+        Task DeletarAvisoAsync(int id, CancellationToken cancellationToken);
+        Task<AvisoEntity> ObterAvisoPorIdAsync(int id, CancellationToken cancellationToken);
+        Task<List<AvisoEntity>> ObterTodosAvisosAsync();
     }
 }

@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="EFCore.BulkExtensions.Core" Version="9.0.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.2" />
@@ -18,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\2-Application\Bernhoeft.GRT.Teste.Application\Bernhoeft.GRT.Teste.Application.csproj" />
     <ProjectReference Include="..\..\3-Domain\Bernhoeft.GRT.Teste.Domain\Bernhoeft.GRT.Teste.Domain.csproj" />
   </ItemGroup>
 
