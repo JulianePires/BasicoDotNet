@@ -3,12 +3,19 @@ using System.Globalization;
 using System.Text.Json.Serialization;
 using Bernhoeft.GRT.Core.Extensions;
 using Bernhoeft.GRT.Teste.Api.Swashbuckle;
+using Bernhoeft.GRT.Teste.Application.Requests.Commands.v1;
 using Bernhoeft.GRT.Teste.Application.Requests.Queries.v1;
+using Bernhoeft.GRT.Teste.Domain.Entities;
+using Bernhoeft.GRT.Teste.Domain.Interfaces.Repositories;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Mappings;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Models;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Unchase.Swashbuckle.AspNetCore.Extensions.Extensions;
@@ -86,10 +93,19 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddMediatR(options => options.RegisterServicesFromAssemblyContaining<GetAvisosRequest>());
 
 // Adicionar Context de Conexão com Banco de Dados SqlServer GRT.
-builder.Services.AddDbContext();
+builder.Services.AddDbContext<AvisoContext>(options =>
+{
+    options.UseInMemoryDatabase("TesteDb");
+});
 
 // Outros Serviços.
 builder.Services.RegisterServicesFromAssemblyContaining<GetAvisosRequest>();
+builder.Services.RegisterServicesFromAssemblyContaining<CreateAvisoRequest>();
+builder.Services.RegisterServicesFromAssemblyContaining<UpdateAvisoRequest>();
+builder.Services.RegisterServicesFromAssemblyContaining<DeleteAvisoRequest>();
+builder.Services.RegisterServicesFromAssemblyContaining<AvisoEntity>();
+builder.Services.RegisterServicesFromAssemblyContaining<AvisoMap>();
+builder.Services.AddScoped<IAvisoRepository, AvisoRepository>();
 
 // Adicionando Fluent Validation.
 ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;

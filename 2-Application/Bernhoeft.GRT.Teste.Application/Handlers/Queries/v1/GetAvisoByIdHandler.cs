@@ -12,20 +12,17 @@ namespace Bernhoeft.GRT.Teste.Application.Handlers.Queries.v1;
 
 public class GetAvisoByIdHandler : IRequestHandler<GetAvisoByIdRequest, IOperationResult<GetAvisosResponse>>
 {
-    private readonly IServiceProvider _serviceProvider;
-    private IAvisoRepository _avisoRepository;
-    private AbstractValidator<GetAvisoByIdRequest> _validator;
+    private readonly IAvisoRepository _avisoRepository;
 
     public GetAvisoByIdHandler(IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
-        _avisoRepository = (IAvisoRepository)_serviceProvider.GetService(typeof(IAvisoRepository));
-        _validator = new GetAvisoByIdValidator();
+        _avisoRepository = (IAvisoRepository)serviceProvider.GetService(typeof(IAvisoRepository));
     }
 
     public async Task<IOperationResult<GetAvisosResponse>> Handle(GetAvisoByIdRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validator = new GetAvisoByIdValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
             return OperationResult<GetAvisosResponse>.ReturnBadRequest();
 

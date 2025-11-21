@@ -10,29 +10,27 @@ using MediatR;
 
 namespace Bernhoeft.GRT.Teste.Application.Handlers.Commands.v1;
 
-public class UpdateAvisoHandler: IRequestHandler<UpdateAvisoRequest, IOperationResult<string>>
+public class UpdateAvisoHandler : IRequestHandler<UpdateAvisoRequest, IOperationResult<string>>
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly IAvisoRepository _avisoRepository;
-    private readonly AbstractValidator<UpdateAvisoRequest> _validator;
 
     public UpdateAvisoHandler(IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
-        _avisoRepository = (IAvisoRepository)_serviceProvider.GetService(typeof(IAvisoRepository));
-        _validator = new UpdateAvisoValidator();
+        _avisoRepository = (IAvisoRepository)serviceProvider.GetService(typeof(IAvisoRepository));
     }
 
     public async Task<IOperationResult<string>> Handle(UpdateAvisoRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validator = new UpdateAvisoValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            return OperationResult<string>.Return(CustomHttpStatusCode.Ok, validationResult.Errors.ToArray().ToString());
+            return OperationResult<string>.Return(CustomHttpStatusCode.BadRequest, string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)));
 
         var avisoExistente = await _avisoRepository.ObterAvisoPorIdAsync(request.Id, cancellationToken);
         if (avisoExistente == null) return OperationResult<string>.ReturnNotFound();
 
-        avisoExistente.DataAtualizacao = new DateTime();
+        avisoExistente.Ativo = false;
+        avisoExistente.DataAtualizacao = DateTime.UtcNow;
 
         await _avisoRepository.AtualizarAvisoAsync(avisoExistente);
         return OperationResult<string>.Return(CustomHttpStatusCode.Ok, "Aviso atualizado com sucesso.");

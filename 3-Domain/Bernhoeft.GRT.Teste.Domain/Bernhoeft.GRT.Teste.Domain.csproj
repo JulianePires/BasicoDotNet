@@ -15,6 +15,9 @@
     <Reference Include="Bernhoeft.GRT.Core.EntityFramework">
       <HintPath>..\..\Libs\Bernhoeft.GRT.Core.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Bernhoeft.GRT.Core.Rest">
+      <HintPath>..\..\Libs\Bernhoeft.GRT.Core.Rest.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

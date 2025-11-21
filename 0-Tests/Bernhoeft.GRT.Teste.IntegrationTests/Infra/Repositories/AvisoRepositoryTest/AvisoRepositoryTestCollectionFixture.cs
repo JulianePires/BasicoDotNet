@@ -1,4 +1,5 @@
 ﻿using Bernhoeft.GRT.Teste.Domain.Interfaces.Repositories;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Models;
 using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +14,9 @@ public class AvisoRepositoryTestCollectionFixture : IDisposable
     public AvisoRepositoryTestCollectionFixture()
     {
         var services = new ServiceCollection();
-        services.AddDbContext<TestDbContext>(options =>
+        services.AddDbContext<AvisoContext>(options =>
             options.UseInMemoryDatabase("integration-tests-db"));
-        services.AddScoped<DbContext>(provider => provider.GetRequiredService<TestDbContext>());
+        services.AddScoped<DbContext>(provider => provider.GetRequiredService<AvisoContext>());
         services.AddScoped<IAvisoRepository, AvisoRepository>();
         ServiceProvider = services.BuildServiceProvider();
     }

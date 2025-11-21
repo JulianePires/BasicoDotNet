@@ -10,24 +10,21 @@ using MediatR;
 
 namespace Bernhoeft.GRT.Teste.Application.Handlers.Commands.v1;
 
-public class CreateAvisoHandler: IRequestHandler<CreateAvisoRequest, IOperationResult<string>>
+public class CreateAvisoHandler : IRequestHandler<CreateAvisoRequest, IOperationResult<string>>
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly IAvisoRepository _avisoRepository;
-    private readonly AbstractValidator<CreateAvisoRequest> _validator;
 
     public CreateAvisoHandler(IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
-        _avisoRepository = (IAvisoRepository)_serviceProvider.GetService(typeof(IAvisoRepository));
-        _validator = new CreateAvisoValidator();
+        _avisoRepository = (IAvisoRepository)serviceProvider.GetService(typeof(IAvisoRepository));
     }
 
     public async Task<IOperationResult<string>> Handle(CreateAvisoRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        var validator = new CreateAvisoValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            return OperationResult<string>.Return(CustomHttpStatusCode.BadRequest, validationResult.Errors.ToArray().ToString());
+            return OperationResult<string>.Return(CustomHttpStatusCode.BadRequest, string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage)));
 
         var aviso = new AvisoEntity()
         {

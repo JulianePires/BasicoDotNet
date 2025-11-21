@@ -21,6 +21,13 @@ namespace Bernhoeft.GRT.Teste.Api.Swashbuckle
                     Description = description.IsDeprecated ? "This version of the API has been deprecated." : ""
                 });
             }
+
+            // Adiciona suporte para [FromHeader], [FromQuery], [FromRoute], [FromBody], etc.
+            options.DescribeAllParametersInCamelCase();
+            options.CustomOperationIds(apiDesc =>
+                $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}_{apiDesc.ActionDescriptor.RouteValues["action"]}");
+            options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Bernhoeft.GRT.Teste.Api.xml"), true);
         }
     }
 }

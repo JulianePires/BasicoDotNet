@@ -3,6 +3,7 @@ using Bernhoeft.GRT.Core.Helper;
 using Bernhoeft.GRT.Teste.Domain.Entities;
 using Bernhoeft.GRT.Teste.Domain.Interfaces.Repositories;
 using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Mappings;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Models;
 using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,8 +43,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             // Create DataBase in Memory.
             using var serviceProvider = @this.BuildServiceProvider();
-            var dbContext = serviceProvider.GetRequiredService<IContext>();
-            AsyncHelper.RunSync(() => ((DbContext)dbContext).Database.EnsureCreatedAsync());
+            var dbContext = serviceProvider.GetRequiredService<AvisoContext>();
+            AsyncHelper.RunSync(() => ((AvisoContext)dbContext).Database.EnsureCreatedAsync());
 
             return @this;
         }
