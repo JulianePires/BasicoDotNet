@@ -2,7 +2,7 @@
 using Bernhoeft.GRT.Core.EntityFramework.Infra;
 using Bernhoeft.GRT.Teste.Domain.Entities;
 using Bernhoeft.GRT.Teste.Domain.Interfaces.Repositories;
-using Bernhoeft.GRT.Teste.Application.Exceptions;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Models;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +12,10 @@ namespace Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Repositories
     [UsedImplicitly]
     public class AvisoRepository : Repository<AvisoEntity>, IAvisoRepository
     {
-        private readonly DbContext _dbContext;
+        private readonly AvisoContext _dbContext;
         private DbSet<AvisoEntity> Avisos => _dbContext.Set<AvisoEntity>();
 
-        public AvisoRepository(DbContext dbContext) : base(dbContext) =>
+        public AvisoRepository(AvisoContext dbContext) : base(dbContext) =>
             _dbContext = dbContext;
 
         public async Task CriarAvisoAsync(AvisoEntity aviso, CancellationToken cancellationToken = default)
