@@ -29,7 +29,8 @@ namespace Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Repositories
             var tracked = await Avisos.FindAsync(aviso.Id);
             if (tracked != null)
             {
-                _dbContext.Entry(tracked).CurrentValues.SetValues(aviso);
+                aviso.DataAtualizacao = new DateTime();
+                _dbContext.Entry(tracked!).CurrentValues.SetValues(aviso);
             }
             else
             {
@@ -40,25 +41,14 @@ namespace Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Repositories
 
         public async Task DeletarAvisoAsync(int id, CancellationToken cancellationToken)
         {
-            var tracked = await Avisos.FindAsync(id);
-            NotFoundException.ThrowIfNull(tracked, "Aviso não encontrado.");
-            var aviso = tracked;
-            aviso.Ativo = false;
-            if (tracked != null)
-            {
-                _dbContext.Entry(tracked).CurrentValues.SetValues(aviso);
-            }
-            else
-            {
-                Avisos.Update(aviso);
-            }
+            var aviso = await Avisos.FirstOrDefaultAsync(x => x.Id == id && x.Ativo, cancellationToken);
+            Avisos.Remove(aviso);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<AvisoEntity> ObterAvisoPorIdAsync(int id, CancellationToken cancellationToken)
         {
             var aviso = await Avisos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.Ativo, cancellationToken);
-            NotFoundException.ThrowIfNull(aviso, "Aviso não encontrado.");
             return aviso;
         }
 

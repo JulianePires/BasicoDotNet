@@ -72,6 +72,15 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/2-Application/Bernhoeft.GRT.Teste.Application/Requests/Commands/v1/DeleteAvisoRequest.cs">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/2-Application/Bernhoeft.GRT.Teste.Application/Requests/Commands/v1/DeleteAvisoRequest.cs" />
+              <option name="originalContent" value="using Bernhoeft.GRT.Core.Interfaces.Results;&#10;using MediatR;&#10;&#10;namespace Bernhoeft.GRT.Teste.Application.Requests.Commands.v1;&#10;&#10;public class DeleteAvisoRequest:IRequest&lt;IOperationResult&lt;IEnumerable&lt;bool&gt;&gt;&gt;&#10;{&#10;    public int Id { get; set; }&#10;}" />
+              <option name="updatedContent" value="using Bernhoeft.GRT.Core.Interfaces.Results;&#10;using MediatR;&#10;&#10;namespace Bernhoeft.GRT.Teste.Application.Requests.Commands.v1;&#10;&#10;public class DeleteAvisoRequest : IRequest&lt;IOperationResult&lt;bool&gt;&gt;&#10;{&#10;    public int Id { get; set; }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/3-Domain/Bernhoeft.GRT.Teste.Domain/Interfaces/Repositories/IAvisoRepository.cs">
           <value>
             <PendingDiffInfo>
