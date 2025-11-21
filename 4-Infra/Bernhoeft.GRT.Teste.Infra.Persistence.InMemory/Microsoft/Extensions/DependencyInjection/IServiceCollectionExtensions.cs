@@ -1,7 +1,9 @@
-﻿using Bernhoeft.GRT.ContractWeb.Infra.Persistence.SqlServer.ContractStore.Mappings;
-using Bernhoeft.GRT.Core.EntityFramework.Domain.Interfaces;
+﻿using Bernhoeft.GRT.Core.EntityFramework.Domain.Interfaces;
 using Bernhoeft.GRT.Core.Helper;
 using Bernhoeft.GRT.Teste.Domain.Entities;
+using Bernhoeft.GRT.Teste.Domain.Interfaces.Repositories;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Mappings;
+using Bernhoeft.GRT.Teste.Infra.Persistence.InMemory.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -36,6 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
                        });
             });
             @this.RegisterServicesFromAssemblyContaining<AvisoMap>(); // Register Repositories with InjectServiceAttribute.
+            @this.AddScoped<IAvisoRepository, AvisoRepository>();
 
             // Create DataBase in Memory.
             using var serviceProvider = @this.BuildServiceProvider();

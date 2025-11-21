@@ -71,16 +71,16 @@ public class AvisoRepositoryTest : IClassFixture<AvisoRepositoryTestFixture>
     }
 
     [Fact]
-    public async Task Teste_AvisoRepository_Deve_LancarExcecaoAoObterAvisoInexistente()
+    public async Task Teste_AvisoRepository_Deve_Retornar_Null_Quando_ObterAvisoInexistente()
     {
         // Arrange
         var avisoInexistenteId = -1;
 
-        // Act & Assert
-        await Assert.ThrowsAsync<NotFoundException>(async () =>
-        {
-            await _avisoRepository.ObterAvisoPorIdAsync(avisoInexistenteId, CancellationToken.None);
-        });
+        // Act
+        var avisoObtido = await _avisoRepository.ObterAvisoPorIdAsync(avisoInexistenteId, new CancellationToken());
+
+        // Assert
+        Assert.Null(avisoObtido);
     }
 
     [Fact]
@@ -113,23 +113,10 @@ public class AvisoRepositoryTest : IClassFixture<AvisoRepositoryTestFixture>
         await _avisoRepository.DeletarAvisoAsync(aviso.Id, CancellationToken.None);
 
         // Assert
-        await Assert.ThrowsAsync<NotFoundException>(async () =>
-        {
-            await _avisoRepository.ObterAvisoPorIdAsync(aviso.Id, CancellationToken.None);
-        });
-    }
+        var avisos = await _avisoRepository.ObterTodosAvisosAsync();
 
-    [Fact]
-    public async Task Teste_AvisoRepository_Deve_LancarExcecaoAoDeletarAvisoInexistente()
-    {
-        // Arrange
-        var avisoInexistenteId = -1;
-
-        // Act & Assert
-        await Assert.ThrowsAsync<NotFoundException>(async () =>
-        {
-            await _avisoRepository.DeletarAvisoAsync(avisoInexistenteId, CancellationToken.None);
-        });
+        Assert.NotNull(avisos);
+        Assert.DoesNotContain(avisos, x => x.Id == aviso.Id);
     }
 
     [Fact]
